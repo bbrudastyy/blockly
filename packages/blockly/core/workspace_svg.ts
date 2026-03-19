@@ -1987,9 +1987,8 @@ export class WorkspaceSvg
    *
    * @param id ID of block center on.
    * @param blockOnly True to center only on the block itself, not its stack.
-   * @param centerOnBlockStart It is correct to center only on the block itself at its beginning.
    */
-  centerOnBlock(id: string | null, blockOnly?: boolean, centerOnBlockStart?: boolean) {
+  centerOnBlock(id: string | null, blockOnly?: boolean) {
     if (!this.isMovable()) {
       console.warn(
         'Tried to move a non-movable workspace. This could result' +
@@ -2011,9 +2010,9 @@ export class WorkspaceSvg
       : block.getHeightWidth();
 
     // Find the enter of the block in workspace units.
-    const blockCenterY = centerOnBlockStart
-      ? xy.y
-      : xy.y + heightWidth.height / 2;
+    const blockCenterY = block.isBlockFullyInBounds()
+      ? xy.y + heightWidth.height / 2
+      : xy.y;
 
     // In RTL the block's position is the top right of the block, not top left.
     const multiplier = this.RTL ? -1 : 1;
